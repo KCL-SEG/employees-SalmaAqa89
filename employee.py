@@ -2,30 +2,77 @@
 """ENTER YOUR SOLUTION HERE!"""
 
 class Employee:
-    def __init__(self, name):
+    def __init__(self, name, contract_type, monthly_salary=0, hours_worked=0, hour_rate=0, commission_rate=0, fixed_bonus = 0, contracts_landed = 0):
         self.name = name
+        self.contract_type = contract_type
+        self.monthly_salary = monthly_salary
+        self.hours_worked = hours_worked
+        self.hour_rate = hour_rate
+        self.commission_rate = commission_rate
+        self.fixed_bonus = fixed_bonus
+        self.contracts_landed = contracts_landed
 
     def get_pay(self):
-        pass
+        pay = 0
+        if self.contract_type == "Monthly salary":
+            pay += self.monthly_salary
+        elif self.contract_type == "Hourly salary":
+            pay += (self.hours_worked * self.hour_rate)
+        else:
+            pay = 0
 
+        if self.contract_type == "Monthly salary" and self.contracts_landed > 0:
+            pay += (self.commission_rate * self.contracts_landed)
+        elif self.contract_type == "Hourly salary" and self.contracts_landed > 0:
+            pay += (self.commission_rate * self.contracts_landed)
+
+        pay += self.fixed_bonus
+
+        return pay
+
+        
     def __str__(self):
-        return self.name
+        pay_info= ""
+        if self.contract_type == "Monthly salary":
+            pay_info = f"{self.monthly_salary}"
+        elif self.contract_type == "Hourly salary":
+            pay_info = f"{self.hours_worked} hours at {self.hour_rate}"
+        else:
+            pay_info = "no pay"
+
+        commission_info = ""
+        if self.contracts_landed > 0:
+            commission_info = f" and receives a commission for {self.contracts_landed} contract(s) at {self.commission_rate}"
+
+        bonus_info = ""
+        if self.fixed_bonus > 0:
+            bonus_info = f" and receives a bonus commission of {self.fixed_bonus}"
+
+        pay = self.get_pay()
+        return f"{self.name} works on a {self.contract_type} contract of {pay_info}{commission_info}{bonus_info}. Their total pay is {pay}."
 
 
-# Billie works on a monthly salary of 4000.  Their total pay is 4000.
-billie = Employee('Billie')
+billie = Employee("Billie", "Monthly salary", monthly_salary=4000)
+charlie = Employee("charlie", "Hourly salary", hours_worked=100, hour_rate=25)
+renee = Employee("Renee", "Monthly salary", monthly_salary=3000, contracts_landed=4, commission_rate=200)
+jan = Employee("Jan", "Hourly salary", hours_worked=150, hour_rate=25, contracts_landed=3, commission_rate=220)
+robbie = Employee("Robbie", "Monthly salary", monthly_salary=2000, fixed_bonus=1500)
+ariel = Employee("Ariel", "Hourly salary", hours_worked=120, hour_rate=30, fixed_bonus=600)
 
-# Charlie works on a contract of 100 hours at 25/hour.  Their total pay is 2500.
-charlie = Employee('Charlie')
+print(billie.get_pay())
+print(str(billie))
 
-# Renee works on a monthly salary of 3000 and receives a commission for 4 contract(s) at 200/contract.  Their total pay is 3800.
-renee = Employee('Renee')
+print(charlie.get_pay())
+print(str(charlie))
 
-# Jan works on a contract of 150 hours at 25/hour and receives a commission for 3 contract(s) at 220/contract.  Their total pay is 4410.
-jan = Employee('Jan')
+print(renee.get_pay())
+print(str(renee))
 
-# Robbie works on a monthly salary of 2000 and receives a bonus commission of 1500.  Their total pay is 3500.
-robbie = Employee('Robbie')
+print(jan.get_pay())
+print(str(jan))
 
-# Ariel works on a contract of 120 hours at 30/hour and receives a bonus commission of 600.  Their total pay is 4200.
-ariel = Employee('Ariel')
+print(robbie.get_pay())
+print(str(robbie))
+
+print(ariel.get_pay())
+print(str(ariel))
